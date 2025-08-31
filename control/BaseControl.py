@@ -19,15 +19,9 @@ class BaseControl(object):
     ################################################################################
 
     def __init__(self, g: float=9.8):
-        """Initialize control for CF2X drone.
-
-        Parameters
-        ----------
-        g : float, optional
-            The gravitational acceleration in m/s^2 (default: 9.8)
-        """
-        # CF2X specific parameters
-        self.DRONE_MODEL = "cf2x"  # Hardcoded for CF2X
+        
+        
+        self.DRONE_MODEL = "cf2x"  
         self.GRAVITY = g * self._getURDFParameter('m')
         self.KF = self._getURDFParameter('kf')  # Thrust coefficient
         self.KM = self._getURDFParameter('km')  # Torque coefficient
@@ -49,26 +43,6 @@ class BaseControl(object):
                               target_vel=np.zeros(3),
                               target_rpy_rates=np.zeros(3)):
         """Compute control from current state.
-
-        Parameters
-        ----------
-        control_timestep : float
-            Control timestep in seconds
-        state : ndarray
-            Current state vector (20 elements)
-        target_pos : ndarray
-            Target position (3 elements)
-        target_rpy : ndarray, optional
-            Target orientation in roll-pitch-yaw (default: zeros)
-        target_vel : ndarray, optional
-            Target velocity (default: zeros)
-        target_rpy_rates : ndarray, optional
-            Target angular rates (default: zeros)
-
-        Returns
-        -------
-        ndarray
-            Control output (4 elements)
         """
         return self.computeControl(
             control_timestep=control_timestep,
@@ -103,19 +77,8 @@ class BaseControl(object):
     ################################################################################
     
     def _getURDFParameter(self, parameter_name: str):
-        """Get parameter from CF2X URDF file.
-
-        Parameters
-        ----------
-        parameter_name : str
-            Name of parameter to retrieve
-
-        Returns
-        -------
-        float
-            Parameter value
-        """
-        URDF = "cf2x.urdf"  # Hardcoded for CF2X
+        """Get parameter from CF2X URDF file."""
+        URDF = "cf2x.urdf"  
         URDF_TREE = etxml.parse(os.path.dirname(os.path.abspath(__file__))+"/../assets/"+URDF).getroot()
         
         if parameter_name == 'm':
@@ -143,23 +106,7 @@ class BaseControl(object):
                           p_coeff_att=None,
                           i_coeff_att=None,
                           d_coeff_att=None):
-        """Set PID coefficients if using PID control.
-        
-        Parameters
-        ----------
-        p_coeff_pos : ndarray, optional
-            Position proportional coefficients
-        i_coeff_pos : ndarray, optional
-            Position integral coefficients
-        d_coeff_pos : ndarray, optional
-            Position derivative coefficients
-        p_coeff_att : ndarray, optional
-            Attitude proportional coefficients
-        i_coeff_att : ndarray, optional
-            Attitude integral coefficients
-        d_coeff_att : ndarray, optional
-            Attitude derivative coefficients
-        """
+        """Set PID coefficients if using PID control."""
         if not all(hasattr(self, attr) for attr in ['P_COEFF_FOR', 'I_COEFF_FOR', 'D_COEFF_FOR',
                                                   'P_COEFF_TOR', 'I_COEFF_TOR', 'D_COEFF_TOR']):
             raise AttributeError("PID coefficients not initialized in this control class")

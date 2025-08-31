@@ -13,14 +13,14 @@ from envs.BaseSingleAgentAviary import ActionType, ObservationType
 # Constants
 EPISODE_REWARD_THRESHOLD = -0
 AGGR_PHY_STEPS = 5
-TOTAL_TIMESTEPS = 600000
+TOTAL_TIMESTEPS = 360000
 EVAL_FREQ = 2000
 
 def train():
     """Main training function with default parameters."""
     # Create log directory
     timestamp = datetime.now().strftime("%m.%d.%Y_%H.%M.%S")
-    log_dir = f"results/save-hover-ppo-kin-rpm-{timestamp}"
+    log_dir = f"results/hover-ppo-{timestamp}"
     os.makedirs(log_dir, exist_ok=True)
     
     # Create environment (removed drone_model parameter)
@@ -38,8 +38,8 @@ def train():
     policy_kwargs = dict(
     activation_fn=torch.nn.ReLU,
     net_arch=dict(
-        pi=[128, 128],  # Architecture for policy network
-        vf=[128, 128]   # Architecture for value network
+        pi=[128,128,128,256],  # Architecture for policy network
+        vf=[128,128,256]   # Architecture for value network
     )
 )
     
@@ -47,7 +47,7 @@ def train():
     "MlpPolicy",
     train_env,
     policy_kwargs=policy_kwargs,
-    tensorboard_log=os.path.join(log_dir, 'tb'),
+    tensorboard_log=os.path.join("logs", "ppo_quad"),
     verbose=1,
     device='auto'  # Let PyTorch choose the best device
 )

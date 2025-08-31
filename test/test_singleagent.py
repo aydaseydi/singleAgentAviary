@@ -1,5 +1,3 @@
-"""Optimized test script for single agent RL with the improved Logger class."""
-
 import os
 import sys 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -16,14 +14,14 @@ from envs.BaseSingleAgentAviary import ActionType, ObservationType
 
 
 # Constants
-DEFAULT_EXP_FOLDER = "results/save-hover-ppo-kin-rpm"  # Default experiment folder
+DEFAULT_EXP_FOLDER = "results/hover-ppo"  # Default experiment folder
 TEST_DURATION = 6  # Test duration in seconds
 AGGR_PHY_STEPS = 5  # Physics steps per RL step
 STARTING_POINT = np.array([[0, 0, 1.2]])  # Initial position
 
 def find_latest_model():
     """Find and load the latest trained model."""
-    exp_folders = [f for f in os.listdir("results") if f.startswith("save-hover-ppo-kin-rpm")]
+    exp_folders = [f for f in os.listdir("results") if f.startswith("hover-ppo")]
     if not exp_folders:
         raise FileNotFoundError("No matching experiment folders found in results/")
     
@@ -71,7 +69,8 @@ def run_test():
     # Initialize logger
     logger = Logger(
         logging_freq_hz=int(test_env.SIM_FREQ / test_env.AGGR_PHY_STEPS),
-        num_drones=1
+        num_drones=1,
+        duration_sec=TEST_DURATION
     )
 
     # Run test
@@ -84,11 +83,12 @@ def run_test():
         test_env.render()
         
         # Log data (state contains 20 elements as per BaseSingleAgentAviary)
+        full_state = test_env._getDroneStateVector(0)
         logger.log(
             drone=0,
-            timestamp=i / test_env.SIM_FREQ,
-            state=obs,
-            control=np.zeros(12)  # Placeholder for control targets
+            timestamp=i/test_env.SIM_FREQ,
+            state=full_state,  # حالت کامل 20 بعدی
+            control=np.zeros(12)
         )
         
         # Sync simulation

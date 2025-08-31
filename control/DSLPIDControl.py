@@ -14,13 +14,7 @@ class DSLPIDControl(BaseControl):
     ################################################################################
 
     def __init__(self, g: float=9.8):
-        """Initialize CF2X PID control.
-        
-        Parameters
-        ----------
-        g : float, optional
-            The gravitational acceleration in m/s^2 (default: 9.8)
-        """
+        """Initialize CF2X PID control."""
         super().__init__(g=g)
         
         # PID coefficients for CF2X
@@ -70,17 +64,7 @@ class DSLPIDControl(BaseControl):
                       target_rpy=np.zeros(3),
                       target_vel=np.zeros(3),
                       target_rpy_rates=np.zeros(3)):
-        """Compute PID control action for CF2X drone.
-        
-        Returns
-        -------
-        ndarray
-            (4,) array of motor RPMs
-        ndarray
-            (3,) array of position errors
-        float
-            Yaw error
-        """
+        """Compute PID control action for CF2X drone."""
         self.control_counter += 1
         
         # Position control
