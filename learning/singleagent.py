@@ -13,7 +13,7 @@ from envs.BaseSingleAgentAviary import ActionType, ObservationType
 # Constants
 EPISODE_REWARD_THRESHOLD = -0
 AGGR_PHY_STEPS = 5
-TOTAL_TIMESTEPS = 360000
+TOTAL_TIMESTEPS = 1000000
 EVAL_FREQ = 2000
 
 def train():
@@ -37,10 +37,9 @@ def train():
     # Create model
     policy_kwargs = dict(
     activation_fn=torch.nn.ReLU,
-    net_arch=dict(
-        pi=[128,128,128,256],  # Architecture for policy network
-        vf=[128,128,256]   # Architecture for value network
-    )
+    net_arch=[
+        dict(shared=[128, 128], pi=[128, 256], vf=[256])
+    ]
 )
     
     model = PPO(
