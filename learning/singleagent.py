@@ -14,7 +14,7 @@ from envs.BaseSingleAgentAviary import ActionType, ObservationType
 EPISODE_REWARD_THRESHOLD = -0
 AGGR_PHY_STEPS = 5
 TOTAL_TIMESTEPS = 1000000
-EVAL_FREQ = 2000
+EVAL_FREQ = 5000
 
 def train():
     """Main training function with default parameters."""
