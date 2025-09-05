@@ -15,7 +15,7 @@ from envs.BaseSingleAgentAviary import ActionType, ObservationType
 
 # Constants
 DEFAULT_EXP_FOLDER = "results/hover-ppo"  # Default experiment folder
-TEST_DURATION = 6  # Test duration in seconds
+TEST_DURATION = 7  # Test duration in seconds
 AGGR_PHY_STEPS = 5  # Physics steps per RL step
 STARTING_POINT = np.array([[0, 0, 1.2]])  # Initial position
 
